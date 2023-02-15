@@ -1,0 +1,107 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Food {
+    private String name;
+    private double price;
+
+    public Food(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+}
+
+class Order {
+    private ArrayList<Food> items;
+    private double total;
+
+    public Order() {
+        items = new ArrayList<>();
+        total = 0.0;
+    }
+
+    public void addItem(Food item) {
+        items.add(item);
+        total += item.getPrice();
+    }
+
+    public ArrayList<Food> getItems() {
+        return items;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+}
+
+class Menu {
+    private ArrayList<Food> items;
+
+    public Menu() {
+        items = new ArrayList<>();
+    }
+
+    public void addItem(Food item) {
+        items.add(item);
+    }
+
+    public ArrayList<Food> getItems() {
+        return items;
+    }
+}
+
+public class FoodOrderingApp {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        Menu menu = new Menu();
+        Order order = new Order();
+
+        // Add menu items
+        menu.addItem(new Food("Hamburger", 8.99));
+        menu.addItem(new Food("Cheeseburger", 9.99));
+        menu.addItem(new Food("Hot Dog", 5.99));
+        menu.addItem(new Food("Fries", 3.99));
+        menu.addItem(new Food("Soda", 1.99));
+
+        // Print menu
+        System.out.println("MENU:");
+        for (Food item : menu.getItems()) {
+            System.out.println(item.getName() + " - $" + item.getPrice());
+        }
+
+        // Take order
+        System.out.println("What would you like to order? (Enter item name or Q to quit)");
+        String itemName = input.nextLine();
+        while (!itemName.equalsIgnoreCase("Q")) {
+            boolean itemFound = false;
+            for (Food item : menu.getItems()) {
+                if (item.getName().equalsIgnoreCase(itemName)) {
+                    order.addItem(item);
+                    System.out.println(itemName + " added to order.");
+                    itemFound = true;
+                    break;
+                }
+            }
+            if (!itemFound) {
+                System.out.println("Item not found. Please enter a valid item name.");
+            }
+            System.out.println("What else would you like to order? (Enter item name or Q to quit)");
+            itemName = input.nextLine();
+        }
+
+        // Print order
+        System.out.println("YOUR ORDER:");
+        for (Food item : order.getItems()) {
+            System.out.println(item.getName() + " - $" + item.getPrice());
+        }
+        System.out.println("TOTAL: $" + order.getTotal());
+    }
+}
